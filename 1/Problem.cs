@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MSTestExtensions;
 
 namespace TDDMistakes._1
 {
     [TestClass]
-    public class Problem
+    public class Problem : BaseTest
     {
         [TestMethod]
         public void GetProductWithValidIDReturnsProduct()
@@ -22,17 +23,14 @@ namespace TDDMistakes._1
         }
 
         [TestMethod]
-        public void GetProductWithInValidIDReturnsNull()
+        public void GetProductWithInValidIDThrowsException()
         {
             // Arrange
             IProductRepository productRepository = new FakeProductRepository();
             ProductService productService = new ProductService(productRepository);
 
-            // Act
-            Product product = productService.GetByID("invalid-id");
-
-            // Assert
-            Assert.IsNull(product);
+            // Act & Assert
+            Assert.Throws<ProductNotFoundException>(() => productService.GetByID("invalid-id"));
         }
 
         class ValidProductRepository : IProductRepository

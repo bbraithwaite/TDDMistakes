@@ -1,11 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Telerik.JustMock;
+using MSTestExtensions;
 
 namespace TDDMistakes._1
 {
     [TestClass]
-    public class Solution
+    public class Solution : BaseTest
     {
         [TestMethod]
         public void GetProductWithValidIDReturnsProduct()
@@ -23,17 +24,14 @@ namespace TDDMistakes._1
         }
 
         [TestMethod]
-        public void GetProductWithInValidIDReturnsNull()
+        public void GetProductWithInValidIDThrowsException()
         {
             // Arrange
             IProductRepository productRepository = Mock.Create<IProductRepository>();
             ProductService productService = new ProductService(productRepository);
 
-            // Act
-            Product product = productService.GetByID("invalid-id");
-
-            // Assert
-            Assert.IsNull(product);
+            // Act & Assert
+            Assert.Throws<ProductNotFoundException>(() => productService.GetByID("invalid-id"));
         }
     }
 }

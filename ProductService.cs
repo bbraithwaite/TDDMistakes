@@ -13,7 +13,14 @@ namespace TDDMistakes
 
         public Product GetByID(string id)
         {
-            return _productRepository.GetByID(id);
+            Product product =  _productRepository.GetByID(id);
+
+            if (product == null)
+            {
+                throw new ProductNotFoundException();
+            }
+
+            return product;
         }
     }
 }
